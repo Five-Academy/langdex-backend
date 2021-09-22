@@ -1,7 +1,13 @@
 openapi: 3.0.0
+
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/lwrubleski/langdex-backend/1.0.0
+
 info:
   description: "Backend do projeto Langdex"
-  version: "0.1.0"
+  version: 1.0.0
   title: "langdex-backend"
   contact:
     email: "lwrubleski@vertigo.com.br"
@@ -91,28 +97,27 @@ components:
     language:
       allOf:
         - $ref: '#/components/schemas/langLandingpage'
-      type: object
-      properties:
-        language_usage:
-          type: string
-        is_object_oriented:
-          type: boolean
-        is_functional:
-          type: boolean
-        is_procedural:
-          type: boolean
-      example:
-        id: 4
-        name: "Java 11"
-        image_url: "http://s2.glbimg.com/Xdw2Ii3YcKAYkFlejYOFmqEms84=/695x0/s.glbimg.com/po/tt2/f/original/2014/03/11/veja-como-resolver-problemas-com-o-java-no-pc.jpg"
-        language_usage: "web, desktop app, mobile, usada pra fazer dev chorar"
-        is_object_oriented: true
-        is_functional: true
-        is_procedural: false
+        - type: object
+          properties:
+            language_usage:
+              type: string
+            is_object_oriented:
+              type: boolean
+            is_functional:
+              type: boolean
+            is_procedural:
+              type: boolean
+          example:
+            id: 4
+            name: "Java 11"
+            image_url: "http://s2.glbimg.com/Xdw2Ii3YcKAYkFlejYOFmqEms84=/695x0/s.glbimg.com/po/tt2/f/original/2014/03/11/veja-como-resolver-problemas-com-o-java-no-pc.jpg"
+            language_usage: "web, desktop app, mobile, usada pra fazer dev chorar"
+            is_object_oriented: true
+            is_functional: true
+            is_procedural: false
   
     ErrorModel:
       type: object
       properties:
         message:
           type: string
-
