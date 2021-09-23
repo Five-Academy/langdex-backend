@@ -4,13 +4,18 @@ import { LanguageReducedDto } from './dto/languageReducedDto';
 
 @Injectable()
 export class LangdexService {
-  getAllLanguagesReduced(): LanguageReducedDto {
+  getAllLanguagesReduced(): LanguageReducedDto[] {
 
-    const langMock: LanguageReducedDto = {
+    const langMock: LanguageReducedDto[] = [{
       id: 1,
       name: 'Java 11',
       image_url: 'www.google.com.br'
-    }
+    },
+    {
+      id: 2,
+      name: 'Java 35',
+      image_url: 'www.duckduckgo.com.br'
+    }]
 
     return langMock;
   }

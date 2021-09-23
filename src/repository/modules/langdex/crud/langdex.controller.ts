@@ -8,7 +8,7 @@ export class LangdexController {
   constructor(private readonly langdexService: LangdexService) {}
 
   @Get()
-  getFrontpage():LanguageReducedDto  {
+  getFrontpage():LanguageReducedDto[]  {
     return this.langdexService.getAllLanguagesReduced();
   }
 
