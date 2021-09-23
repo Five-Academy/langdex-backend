@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { LangdexController } from './repository/modules/langdex/crud/langdex.controller';
+import { LangdexService } from './repository/modules/langdex/crud/langdex.service';
 
 @Module({
   imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [LangdexController],
+  providers: [LangdexService],
 })
 export class AppModule {}
