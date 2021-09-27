@@ -1,6 +1,7 @@
-import { Controller, Get, Param } from '@nestjs/common';
-import { LanguageDto } from './dto/languageDto';
-import { LanguageReducedDto } from './dto/languageReducedDto';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { CreateLanguageDto } from './dto/create-language-dto';
+import { DetailedLanguageDto } from './dto/detailed-language-dto';
+import { FrontpageLanguageDto } from './dto/frontpage-language.dto';
 import { LangdexService } from './langdex.service';
 
 @Controller("language")
@@ -8,12 +9,17 @@ export class LangdexController {
   constructor(private readonly langdexService: LangdexService) {}
 
   @Get()
-  getFrontpage():LanguageReducedDto[]  {
-    return this.langdexService.getAllLanguagesReduced();
+  async getFrontpage():Promise<FrontpageLanguageDto[]>  {
+    return this.langdexService.findFrontpage();
+  }
+
+  @Post()
+  async create(@Body() createLanguageDto: CreateLanguageDto): Promise<DetailedLanguageDto> {
+    return this.langdexService.createLanguage(createLanguageDto);
   }
 
   @Get(":id")
-  getLanguageById(@Param("id") id: string): LanguageDto {
+  async findById(@Param("id") id: string): Promise<DetailedLanguageDto> {
     return this.langdexService.getLanguageById(id);
   }
 }

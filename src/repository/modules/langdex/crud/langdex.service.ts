@@ -1,37 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { LanguageDto } from './dto/languageDto';
-import { LanguageReducedDto } from './dto/languageReducedDto';
+import { InjectModel } from '@nestjs/mongoose'
+import { Model } from 'mongoose';
+import { InjectMapper } from 'nestjsx-automapper';
+import { CreateLanguageDto } from './dto/create-language-dto';
+import { DetailedLanguageDto } from './dto/detailed-language-dto';
+import { FrontpageLanguageDto } from './dto/frontpage-language.dto';
+import { Language, LanguageDocument, LanguageSchema } from './schemas/language.schema';
+import { AutoMapper } from '@nartc/automapper';
+
 
 @Injectable()
 export class LangdexService {
-  getAllLanguagesReduced(): LanguageReducedDto[] {
+  constructor(
+    @InjectModel(Language.name) private readonly languageModel: Model<LanguageDocument>,
+    @InjectMapper() private readonly mapper: AutoMapper
+  ) {}
 
-    const langMock: LanguageReducedDto[] = [{
-      id: 1,
-      name: 'Java 11',
-      image_url: 'www.google.com.br'
-    },
-    {
-      id: 2,
-      name: 'Java 35',
-      image_url: 'www.duckduckgo.com.br'
-    }]
-
-    return langMock;
+  async findFrontpage(): Promise<FrontpageLanguageDto[]> {
+    // Não parece muito elegante. Queria poder fazer isso pelo meu DTO. Tem como?
+    return await this.languageModel.find().select('-language_usage -is_object_oriented -is_functional -is_procedural -__v').exec();
   }
 
-  getLanguageById(id: string): LanguageDto {
+  async getLanguageById(id: string): Promise<DetailedLanguageDto> {
+    return this.languageModel.findById(id).exec();
+  }
 
-    const langMock: LanguageDto = {
-      id: Number(id),
-      name: 'Java 11',
-      image_url: 'www.google.com.br',
-      language_usage: 'Fazer Dev Chorar',
-      is_object_oriented: true,
-      is_functional: true,
-      is_procedural: true,
-    }
-
-    return langMock;
+  async createLanguage(createLanguageDto: CreateLanguageDto): Promise<DetailedLanguageDto> {
+    const createdLanguage = new this.languageModel(createLanguageDto);
+    return createdLanguage.save();
   }
 }
