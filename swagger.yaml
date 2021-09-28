@@ -1,0 +1,123 @@
+openapi: 3.0.0
+
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/lwrubleski/langdex-backend/1.0.0
+
+info:
+  description: "Backend do projeto Langdex"
+  version: 1.0.0
+  title: "langdex-backend"
+  contact:
+    email: "lwrubleski@vertigo.com.br"
+
+tags:
+  - name: "language"
+    description: "Programming language related operations"
+
+
+
+paths:
+  /language:
+    get:
+      tags:
+        - "language"
+      summary: "List all languages with reduced information"
+      description: "Responsible to return an array with reduced language information"
+      responses:
+        '200':
+          description: "Language list"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/langLandingpage'
+        '500':
+          description: 'Unexpected error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              examples:
+                response:
+                  value:
+                    message: 'Unexpected server error'
+  /language/{id}:
+    get:
+      tags:
+        - "language"
+      summary: "Return the language with the ID sent"
+      description: "Responsible to return the whole language information"
+      parameters: 
+        - name: "id"
+          in: "path"
+          description: "Language ID"
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Language information"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/language'
+        '204':
+          description: "No language with such ID found"
+        '500':
+          description: 'Unexpected error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              examples:
+                response:
+                  value:
+                    message: 'Unexpected server error'
+
+
+components:
+  schemas:
+    langLandingpage:
+      type: object
+      properties:
+        id: 
+          type: integer
+        name:
+          type: string
+        image_url:
+          type: string
+      example:
+        id: 4
+        name: "Java 11"
+        image_url: "http://s2.glbimg.com/Xdw2Ii3YcKAYkFlejYOFmqEms84=/695x0/s.glbimg.com/po/tt2/f/original/2014/03/11/veja-como-resolver-problemas-com-o-java-no-pc.jpg"
+
+    language:
+      allOf:
+        - $ref: '#/components/schemas/langLandingpage'
+        - type: object
+          properties:
+            language_usage:
+              type: string
+            is_object_oriented:
+              type: boolean
+            is_functional:
+              type: boolean
+            is_procedural:
+              type: boolean
+          example:
+            id: 4
+            name: "Java 11"
+            image_url: "http://s2.glbimg.com/Xdw2Ii3YcKAYkFlejYOFmqEms84=/695x0/s.glbimg.com/po/tt2/f/original/2014/03/11/veja-como-resolver-problemas-com-o-java-no-pc.jpg"
+            language_usage: "web, desktop app, mobile, usada pra fazer dev chorar"
+            is_object_oriented: true
+            is_functional: true
+            is_procedural: false
+  
+    ErrorModel:
+      type: object
+      properties:
+        message:
+          type: string
