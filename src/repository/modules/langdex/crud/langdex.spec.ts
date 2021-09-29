@@ -3,6 +3,7 @@ import { LangdexController } from './langdex.controller';
 import {LangdexService} from './langdex.service';
 import { FrontpageLanguageDto } from './dto/frontpage-language.dto';
 import { DetailedLanguageDto } from './dto/detailed-language-dto';
+import { CreateLanguageDto } from './dto/create-language-dto';
 
 const frontPageMock: FrontpageLanguageDto[] = [
 {
@@ -21,6 +22,20 @@ const frontPageMock: FrontpageLanguageDto[] = [
   image_url: 'www.google.com'
 }
 ];
+
+const createdLanguageMock: DetailedLanguageDto[] = [
+  {
+    id: 4,    
+    name: "C",    
+    image_url: "www.google.com",    
+    language_usage: "embedded systems, back-end, general",  
+    is_object_oriented: false,    
+    is_functional: false,    
+    is_procedural: true,
+    
+
+  }
+]
 
 /*const lang: DetailedLanguageDto = {
   id: 1,
@@ -72,7 +87,14 @@ describe('TestRetorneFromRouter', () => {
     });
   });
 
-  describe('ReturnALanguage()', () => {
+  describe('ReturnCreatedLanguage()')
+
+  describe('ReturnALanguage()', () => {, () => {
+    test('Should return the created language');
+    //act
+    const result = await langController.create()
+
+  }
     test('Should be return a language', async () => {
       const result = await langController.findById('2');
       
