@@ -23,9 +23,9 @@ const frontPageMock: FrontpageLanguageDto[] = [
 }
 ];
 
-const createdLanguageMock: DetailedLanguageDto[] = [
+const createdLanguageMock: DetailedLanguageDto = 
   {
-    id: 4,    
+    id: 4,
     name: "C",    
     image_url: "www.google.com",    
     language_usage: "embedded systems, back-end, general",  
@@ -35,7 +35,7 @@ const createdLanguageMock: DetailedLanguageDto[] = [
     
 
   }
-]
+
 
 /*const lang: DetailedLanguageDto = {
   id: 1,
@@ -60,7 +60,7 @@ describe('TestRetorneFromRouter', () => {
           provide: LangdexService,
           useValue: {
             findFrontpage: jest.fn().mockResolvedValue(frontPageMock),
-            createLanguage: jest.fn(),
+            createLanguage: jest.fn().mockResolvedValue(createdLanguageMock),
             getLanguageById: jest.fn().mockResolvedValue(frontPageMock[1])
           }
         }
@@ -87,20 +87,25 @@ describe('TestRetorneFromRouter', () => {
     });
   });
 
-  describe('ReturnCreatedLanguage()')
+  
 
-  describe('ReturnALanguage()', () => {, () => {
-    test('Should return the created language');
-    //act
-    const result = await langController.create()
-
-  }
+  describe('ReturnALanguage()', () => {
     test('Should be return a language', async () => {
       const result = await langController.findById('2');
       
       console.log(result.id, frontPageMock[0].id);
       expect(result.id).toEqual(frontPageMock[1].id);
+    
+    });
+  });
+
+  describe('ReturnTheCreatedLanguage()', () => {
+    test('Should return the created language', async () => {
+      const result = await langController.create(createdLanguageMock);
+
+      console.log(result);
+      expect(result).toEqual(frontPageMock);
     })
   })
-
-});
+    
+})
