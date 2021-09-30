@@ -1,0 +1,47 @@
+version: '3.9'
+services:
+  backend:
+    container_name: langdex-backend
+    image: dev-langdex
+    build:
+      context: .
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    networks:
+      - langdex
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', '/usr/bin/wget', '--tries=1', '--spider', 'localhost:3000']
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  postgres:
+    container_name: langdex-db
+    image: postgres:13-alpine
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_PORT: 5432
+      POSTGRES_HOST: langdex
+      POSTGRES_DATABASE: langdex
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: langdex123
+    networks:
+      - langdex
+    restart: always
+    healthcheck:
+      test: ['CMD', 'pg_isready']
+      timeout: 10s
+      retries: 10
+
+networks:
+  langdex:
