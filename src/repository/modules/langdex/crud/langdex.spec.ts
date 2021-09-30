@@ -3,7 +3,7 @@ import { LangdexController } from './langdex.controller';
 import {LangdexService} from './langdex.service';
 import { FrontpageLanguageDto } from './dto/frontpage-language.dto';
 import { DetailedLanguageDto } from './dto/detailed-language-dto';
-import { CreateLanguageDto } from './dto/create-language-dto';
+
 
 const frontPageMock: FrontpageLanguageDto[] = [
 {
@@ -37,16 +37,7 @@ const createdLanguageMock: DetailedLanguageDto =
   }
 
 
-/*const lang: DetailedLanguageDto = {
-  id: 1,
-  name: 'java',
-  image_url: 'www.google.com',
-  language_usage: 'back-end',
-  is_object_oriented: true,
-  is_functional: true,
-  is_procedural: true
-};*/
- 
+
 
 describe('TestRetorneFromRouter', () => {
   let langController: LangdexController; 
@@ -72,7 +63,7 @@ describe('TestRetorneFromRouter', () => {
   });
 
   it('should be defined', () => {
-    //range
+    
     
     expect(langController).toBeDefined();
     expect(langService).toBeDefined();
@@ -80,9 +71,9 @@ describe('TestRetorneFromRouter', () => {
 
   describe('ReturnArrayOfLanguageObject()', () => {
     test('Should be return a array of language from page', async () => {
-      //act 
+      
       const result = await langController.getFrontpage();
-      // assurt
+      
       expect(result).toEqual(frontPageMock);
     });
   });
@@ -93,7 +84,7 @@ describe('TestRetorneFromRouter', () => {
     test('Should be return a language', async () => {
       const result = await langController.findById('2');
       
-      console.log(result.id, frontPageMock[0].id);
+      
       expect(result.id).toEqual(frontPageMock[1].id);
     
     });
@@ -103,7 +94,7 @@ describe('TestRetorneFromRouter', () => {
     test('Should return the created language', async () => {
       const result = await langController.create(createdLanguageMock);
 
-      console.log(result);
+      
       expect(result).toEqual(createdLanguageMock);
     })
   })
