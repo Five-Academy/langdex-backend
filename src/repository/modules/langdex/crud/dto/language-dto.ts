@@ -1,4 +1,4 @@
-export class DetailedLanguageDto {
+export class LanguageDto {
     readonly id: number;
     readonly name: string;
     readonly image_url: string;
