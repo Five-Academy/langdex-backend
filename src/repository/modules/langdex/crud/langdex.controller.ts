@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, HttpStatus, Param, Post, UseFilters } from '@nestjs/common';
 import { CreateLanguageDto } from './dto/create-language-dto';
 import { DetailedLanguageDto } from './dto/detailed-language-dto';
 import { FrontpageLanguageDto } from './dto/frontpage-language.dto';
+import {HttpExceptionFilter} from './http-exception.filter';
 import { LangdexService } from './langdex.service';
 
 @Controller("language")
@@ -14,8 +15,17 @@ export class LangdexController {
   }
 
   @Post()
+  @UseFilters(new HttpExceptionFilter())
   async create(@Body() createLanguageDto: CreateLanguageDto): Promise<DetailedLanguageDto> {
-    return this.langdexService.createLanguage(createLanguageDto);
+    try {
+      
+       return this.langdexService.createLanguage(createLanguageDto);
+    } catch (err) {
+      throw new BadRequestException({
+        status: HttpStatus.BAD_REQUEST,
+        error: 'Unable to register'
+      });
+    }
   }
 
   @Get(":id")
