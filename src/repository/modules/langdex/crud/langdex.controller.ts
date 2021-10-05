@@ -10,8 +10,21 @@ export class LangdexController {
   constructor(private readonly langdexService: LangdexService) {}
 
   @Get()
+  // Usar a annotation pra dizer que aqui vamos aplicar nossa exception filter
+  @UseFilters(new HttpExceptionFilter())
   async getFrontpage():Promise<FrontpageLanguageDto[]>  {
-    return this.langdexService.findFrontpage();
+    //return this.langdexService.findFrontpage();
+    // TODO: Fazer a tratativa de erro com um try catch
+
+    try {
+      return this.langdexService.findFrontpage();
+    } catch (err) {
+      throw new BadRequestException({
+        status: HttpStatus.BAD_REQUEST,
+        error: 'Unable to get front page language'
+      });
+    }
+
   }
 
   @Post()
