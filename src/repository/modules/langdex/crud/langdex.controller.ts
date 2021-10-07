@@ -1,8 +1,7 @@
 import { BadRequestException, Body, Controller, Get, HttpStatus, Param, Post, UseFilters } from '@nestjs/common';
 import { CreateLanguageDto } from './dto/create-language-dto';
-import { DetailedLanguageDto } from './dto/detailed-language-dto';
-import { FrontpageLanguageDto } from './dto/frontpage-language.dto';
 import {HttpExceptionFilter} from './http-exception.filter';
+import { LanguageDto } from './dto/language-dto';
 import { LangdexService } from './langdex.service';
 
 @Controller("language")
@@ -10,12 +9,8 @@ export class LangdexController {
   constructor(private readonly langdexService: LangdexService) {}
 
   @Get()
-  // Usar a annotation pra dizer que aqui vamos aplicar nossa exception filter
   @UseFilters(new HttpExceptionFilter())
-  async getFrontpage():Promise<FrontpageLanguageDto[]>  {
-    //return this.langdexService.findFrontpage();
-    // TODO: Fazer a tratativa de erro com um try catch
-
+  async getFrontpage():Promise<LanguageDto[]>  {
     try {
       return this.langdexService.findFrontpage();
     } catch (err) {
@@ -29,9 +24,8 @@ export class LangdexController {
 
   @Post()
   @UseFilters(new HttpExceptionFilter())
-  async create(@Body() createLanguageDto: CreateLanguageDto): Promise<DetailedLanguageDto> {
+  async create(@Body() createLanguageDto: CreateLanguageDto): Promise<LanguageDto> {
     try {
-      
        return this.langdexService.createLanguage(createLanguageDto);
     } catch (err) {
       throw new BadRequestException({
@@ -39,10 +33,11 @@ export class LangdexController {
         error: 'Unable to register'
       });
     }
+
   }
 
   @Get(":id")
-  async findById(@Param("id") id: string): Promise<DetailedLanguageDto> {
+  async findById(@Param("id") id: string): Promise<LanguageDto> {
     return this.langdexService.getLanguageById(id);
   }
 }
